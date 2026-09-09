@@ -2,15 +2,15 @@ package com.puppyfinder;
 
 enum Puppy
 {
-	CHIHUAHUA(16398, "Chihuahua", "Uzer Oasis", "chihuahuaFound"),
+	CHIHUAHUA(16398, "Chihuahua", "Eastern part of Uzer Oasis", "chihuahuaFound"),
 	BORDER_COLLIE(16400, "Border Collie", "North of Crafting Guild", "borderCollieFound"),
-	CORGI(16402, "Corgi", "Probita's shop in Ardougne", "corgiFound"),
+	CORGI(16402, "Corgi", "Around Probita's shop in Ardougne", "corgiFound"),
 	GREYHOUND(16404, "Greyhound", "South of Woodcutting Guild", "greyhoundFound"),
 	HUSKY(16412, "Husky", "Fishing Hamlet east of Wintertodt", "huskyFound"),
 	SAMOYED(16406, "Samoyed", "Hardwood groove in Tai Bwo Wannai", "samoyedFound"),
-	BERNESE_MOUNTAIN_DOG(16408, "Bernese Mountain Dog", "East of Relekka, West of Keldagrin entrance", "berneseMountainDogFound"),
-	SHIBA(16410, "Shiba", "Avium Savannah, between Pyre foxes and Hill giants", "shibaFound"),
-	YORKIE(16414, "Yorkie", "The Great Conch, west of marketplace", "yorkieFound");
+	BERNESE_MOUNTAIN_DOG(16408, "Bernese Mountain Dog", "Between Relekka and Keldagrin entrance", "berneseMountainDogFound"),
+	SHIBA(16410, "Shiba", "Avium Savannah Pyre foxes", "shibaFound"),
+	YORKIE(16414, "Yorkie", "The Great Conch west of marketplace", "yorkieFound");
 
 	private final int npcId;
 	private final String displayName;

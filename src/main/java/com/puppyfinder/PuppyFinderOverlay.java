@@ -36,7 +36,6 @@ class PuppyFinderOverlay extends OverlayPanel
 
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text("Puppy Finder")
-			.color(Color.YELLOW)
 			.build());
 
 		int remaining = 0;
@@ -49,7 +48,7 @@ class PuppyFinderOverlay extends OverlayPanel
 
 			remaining++;
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(puppy.getDisplayName() + " - " + puppy.getLocation())
+				.left(puppy.getDisplayName() + ": " + puppy.getLocation())
 				.build());
 		}
 

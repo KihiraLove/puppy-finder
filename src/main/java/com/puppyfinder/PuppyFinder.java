@@ -30,13 +30,12 @@ import net.runelite.client.util.Text;
 @Slf4j
 @PluginDescriptor(
 	name = "Puppy Finder",
-	description = "Highlights lost puppies and shows where to find undiscovered breeds",
-	tags = {"dog", "puppy", "highlight", "hint", "quest"}
+	description = "Helps finding lost puppies after A Ruff Situation",
+	tags = {"dog", "puppy", "highlight", "hint"}
 )
 public class PuppyFinder extends Plugin
 {
 	private static final Color HIGHLIGHT_COLOR = Color.YELLOW;
-	private static final Color HIGHLIGHT_FILL_COLOR = new Color(255, 255, 0, 40);
 
 	@Inject
 	private Client client;
@@ -224,8 +223,6 @@ public class PuppyFinder extends Plugin
 		return HighlightedNpc.builder()
 			.npc(npc)
 			.highlightColor(HIGHLIGHT_COLOR)
-			.fillColor(HIGHLIGHT_FILL_COLOR)
-			.hull(false)
 			.tile(true)
 			.borderWidth(1.0f)
 			.build();
