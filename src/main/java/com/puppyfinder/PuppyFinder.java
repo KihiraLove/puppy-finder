@@ -119,7 +119,7 @@ public class PuppyFinder extends Plugin
 		}
 
 		npcOverlayService.rebuild();
-		refreshHintArrow();
+		clientThread.invoke(this::refreshHintArrow);
 	}
 
 	private void rebuildLoadedPuppies()
@@ -146,7 +146,7 @@ public class PuppyFinder extends Plugin
 	private HighlightedNpc highlightNpc(NPC npc)
 	{
 		Puppy puppy = Puppy.fromNpcId(npc.getId());
-		if (puppy == null || config.isFound(puppy))
+		if (puppy == null || puppy.isFound(config))
 		{
 			return null;
 		}
@@ -183,7 +183,7 @@ public class PuppyFinder extends Plugin
 	{
 		for (Puppy puppy : Puppy.values())
 		{
-			if (config.isFound(puppy))
+			if (puppy.isFound(config))
 			{
 				continue;
 			}

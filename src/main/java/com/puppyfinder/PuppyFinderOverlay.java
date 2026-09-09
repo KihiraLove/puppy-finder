@@ -40,7 +40,7 @@ class PuppyFinderOverlay extends OverlayPanel
 		int remaining = 0;
 		for (Puppy puppy : Puppy.values())
 		{
-			if (config.isFound(puppy))
+			if (puppy.isFound(config))
 			{
 				continue;
 			}

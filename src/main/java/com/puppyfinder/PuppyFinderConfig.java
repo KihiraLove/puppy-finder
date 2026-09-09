@@ -135,31 +135,4 @@ public interface PuppyFinderConfig extends Config
 	{
 		return false;
 	}
-
-	default boolean isFound(Puppy puppy)
-	{
-		switch (puppy)
-		{
-			case CHIHUAHUA:
-				return chihuahuaFound();
-			case BORDER_COLLIE:
-				return borderCollieFound();
-			case CORGI:
-				return corgiFound();
-			case GREYHOUND:
-				return greyhoundFound();
-			case HUSKY:
-				return huskyFound();
-			case SAMOYED:
-				return samoyedFound();
-			case BERNESE_MOUNTAIN_DOG:
-				return berneseMountainDogFound();
-			case SHIBA:
-				return shibaFound();
-			case YORKIE:
-				return yorkieFound();
-			default:
-				return false;
-		}
-	}
 }

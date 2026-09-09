@@ -38,6 +38,33 @@ enum Puppy
 		return location;
 	}
 
+	boolean isFound(PuppyFinderConfig config)
+	{
+		switch (this)
+		{
+			case CHIHUAHUA:
+				return config.chihuahuaFound();
+			case BORDER_COLLIE:
+				return config.borderCollieFound();
+			case CORGI:
+				return config.corgiFound();
+			case GREYHOUND:
+				return config.greyhoundFound();
+			case HUSKY:
+				return config.huskyFound();
+			case SAMOYED:
+				return config.samoyedFound();
+			case BERNESE_MOUNTAIN_DOG:
+				return config.berneseMountainDogFound();
+			case SHIBA:
+				return config.shibaFound();
+			case YORKIE:
+				return config.yorkieFound();
+			default:
+				return false;
+		}
+	}
+
 	static Puppy fromNpcId(int npcId)
 	{
 		for (Puppy puppy : values())
