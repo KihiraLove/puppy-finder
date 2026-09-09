@@ -155,9 +155,9 @@ public class PuppyFinder extends Plugin
 			.npc(npc)
 			.highlightColor(HIGHLIGHT_COLOR)
 			.fillColor(HIGHLIGHT_FILL_COLOR)
-			.hull(true)
+			.hull(false)
 			.tile(true)
-			.borderWidth(2.0f)
+			.borderWidth(1.0f)
 			.build();
 	}
 
