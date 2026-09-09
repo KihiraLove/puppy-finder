@@ -12,6 +12,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 class PuppyFinderOverlay extends OverlayPanel
 {
 	private static final int PANEL_WIDTH = 300;
+	private static final String SEPARATOR = "────────────────────────";
 
 	private final PuppyFinder plugin;
 	private final PuppyFinderConfig config;
@@ -39,6 +40,7 @@ class PuppyFinderOverlay extends OverlayPanel
 			.build());
 
 		int remaining = 0;
+		boolean firstEntry = true;
 		for (Puppy puppy : Puppy.values())
 		{
 			if (plugin.isFound(puppy))
@@ -46,7 +48,16 @@ class PuppyFinderOverlay extends OverlayPanel
 				continue;
 			}
 
+			if (!firstEntry)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left(SEPARATOR)
+					.leftColor(Color.GRAY)
+					.build());
+			}
+
 			remaining++;
+			firstEntry = false;
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(puppy.getDisplayName() + ": " + puppy.getLocation())
 				.build());

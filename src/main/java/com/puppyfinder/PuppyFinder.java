@@ -158,6 +158,8 @@ public class PuppyFinder extends Plugin
 			{
 				sessionFoundPuppies.remove(changedPuppy);
 			}
+
+			disableInfoBoxIfComplete();
 		}
 
 		npcOverlayService.rebuild();
@@ -182,6 +184,7 @@ public class PuppyFinder extends Plugin
 			log.debug("Unable to persist rescued puppy {} to config", puppy.getDisplayName(), ex);
 		}
 
+		disableInfoBoxIfComplete();
 		npcOverlayService.rebuild();
 		refreshHintArrow();
 	}
@@ -189,6 +192,27 @@ public class PuppyFinder extends Plugin
 	boolean isFound(Puppy puppy)
 	{
 		return sessionFoundPuppies.contains(puppy) || puppy.isFound(config);
+	}
+
+	private boolean allPuppiesFound()
+	{
+		for (Puppy puppy : Puppy.values())
+		{
+			if (!isFound(puppy))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private void disableInfoBoxIfComplete()
+	{
+		if (config.showInfoBox() && allPuppiesFound())
+		{
+			configManager.setConfiguration(PuppyFinderConfig.GROUP, "showInfoBox", false);
+		}
 	}
 
 	private void rebuildLoadedPuppies()
