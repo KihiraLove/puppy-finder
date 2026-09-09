@@ -13,12 +13,14 @@ class PuppyFinderOverlay extends OverlayPanel
 {
 	private static final int PANEL_WIDTH = 300;
 
+	private final PuppyFinder plugin;
 	private final PuppyFinderConfig config;
 
 	@Inject
 	PuppyFinderOverlay(PuppyFinder plugin, PuppyFinderConfig config)
 	{
 		super(plugin);
+		this.plugin = plugin;
 		this.config = config;
 		setPosition(OverlayPosition.TOP_LEFT);
 		panelComponent.setPreferredSize(new Dimension(PANEL_WIDTH, 0));
@@ -40,7 +42,7 @@ class PuppyFinderOverlay extends OverlayPanel
 		int remaining = 0;
 		for (Puppy puppy : Puppy.values())
 		{
-			if (puppy.isFound(config))
+			if (plugin.isFound(puppy))
 			{
 				continue;
 			}

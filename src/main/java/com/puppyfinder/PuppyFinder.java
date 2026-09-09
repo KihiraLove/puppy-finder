@@ -2,14 +2,17 @@ package com.puppyfinder;
 
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -22,6 +25,7 @@ import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.Text;
 
 @Slf4j
 @PluginDescriptor(
@@ -44,6 +48,9 @@ public class PuppyFinder extends Plugin
 	private PuppyFinderConfig config;
 
 	@Inject
+	private ConfigManager configManager;
+
+	@Inject
 	private PuppyFinderOverlay overlay;
 
 	@Inject
@@ -53,6 +60,7 @@ public class PuppyFinder extends Plugin
 	private NpcOverlayService npcOverlayService;
 
 	private final Set<NPC> loadedPuppies = new HashSet<>();
+	private final Set<Puppy> sessionFoundPuppies = EnumSet.noneOf(Puppy.class);
 	private final Function<NPC, HighlightedNpc> highlighter = this::highlightNpc;
 	private NPC hintArrowNpc;
 
@@ -60,6 +68,7 @@ public class PuppyFinder extends Plugin
 	protected void startUp()
 	{
 		log.debug("Puppy Finder started");
+		sessionFoundPuppies.clear();
 		overlayManager.add(overlay);
 		npcOverlayService.registerHighlighter(highlighter);
 		clientThread.invoke(this::rebuildLoadedPuppies);
@@ -73,6 +82,7 @@ public class PuppyFinder extends Plugin
 		npcOverlayService.unregisterHighlighter(highlighter);
 		clearOwnHintArrow();
 		loadedPuppies.clear();
+		sessionFoundPuppies.clear();
 	}
 
 	@Subscribe
@@ -92,6 +102,26 @@ public class PuppyFinder extends Plugin
 		if (loadedPuppies.remove(event.getNpc()))
 		{
 			refreshHintArrow();
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.MESBOX
+			&& event.getType() != ChatMessageType.GAMEMESSAGE)
+		{
+			return;
+		}
+
+		String message = Text.removeTags(event.getMessage()).trim();
+		for (Puppy puppy : Puppy.values())
+		{
+			if (puppy.matchesRescueMessage(message))
+			{
+				markPuppyFound(puppy);
+				return;
+			}
 		}
 	}
 
@@ -118,8 +148,48 @@ public class PuppyFinder extends Plugin
 			return;
 		}
 
+		Puppy changedPuppy = Puppy.fromConfigKey(event.getKey());
+		if (changedPuppy != null)
+		{
+			if (Boolean.parseBoolean(event.getNewValue()))
+			{
+				sessionFoundPuppies.add(changedPuppy);
+			}
+			else
+			{
+				sessionFoundPuppies.remove(changedPuppy);
+			}
+		}
+
 		npcOverlayService.rebuild();
 		clientThread.invoke(this::refreshHintArrow);
+	}
+
+	private void markPuppyFound(Puppy puppy)
+	{
+		if (isFound(puppy))
+		{
+			return;
+		}
+
+		sessionFoundPuppies.add(puppy);
+
+		try
+		{
+			configManager.setConfiguration(PuppyFinderConfig.GROUP, puppy.getConfigKey(), true);
+		}
+		catch (RuntimeException ex)
+		{
+			log.debug("Unable to persist rescued puppy {} to config", puppy.getDisplayName(), ex);
+		}
+
+		npcOverlayService.rebuild();
+		refreshHintArrow();
+	}
+
+	boolean isFound(Puppy puppy)
+	{
+		return sessionFoundPuppies.contains(puppy) || puppy.isFound(config);
 	}
 
 	private void rebuildLoadedPuppies()
@@ -146,7 +216,7 @@ public class PuppyFinder extends Plugin
 	private HighlightedNpc highlightNpc(NPC npc)
 	{
 		Puppy puppy = Puppy.fromNpcId(npc.getId());
-		if (puppy == null || puppy.isFound(config))
+		if (puppy == null || isFound(puppy))
 		{
 			return null;
 		}
@@ -183,7 +253,7 @@ public class PuppyFinder extends Plugin
 	{
 		for (Puppy puppy : Puppy.values())
 		{
-			if (puppy.isFound(config))
+			if (isFound(puppy))
 			{
 				continue;
 			}
