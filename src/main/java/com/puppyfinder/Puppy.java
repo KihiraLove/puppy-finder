@@ -1,16 +1,18 @@
 package com.puppyfinder;
 
+import net.runelite.api.gameval.NpcID;
+
 enum Puppy
 {
-	CHIHUAHUA(16398, "Chihuahua", "Eastern part of Uzer Oasis", "chihuahuaFound"),
-	BORDER_COLLIE(16400, "Border Collie", "North of Crafting Guild", "borderCollieFound"),
-	CORGI(16402, "Corgi", "Around Probita's shop in Ardougne", "corgiFound"),
-	GREYHOUND(16404, "Greyhound", "South of Woodcutting Guild", "greyhoundFound"),
-	HUSKY(16412, "Husky", "Fishing Hamlet east of Wintertodt", "huskyFound"),
-	SAMOYED(16406, "Samoyed", "Hardwood groove in Tai Bwo Wannai", "samoyedFound"),
-	BERNESE_MOUNTAIN_DOG(16408, "Bernese Mountain Dog", "Between Relekka and Keldagrin entrance", "berneseMountainDogFound"),
-	SHIBA(16410, "Shiba", "Avium Savannah Pyre foxes", "shibaFound"),
-	YORKIE(16414, "Yorkie", "The Great Conch west of marketplace", "yorkieFound");
+	CHIHUAHUA(NpcID.CHIHUAHUA_WANDER, "Chihuahua", "Eastern part of Uzer Oasis", "chihuahuaFound"),
+	BORDER_COLLIE(NpcID.COLLIE_WANDER, "Border Collie", "North of Crafting Guild", "borderCollieFound"),
+	CORGI(NpcID.CORGI_WANDER, "Corgi", "Around Probita's shop in Ardougne", "corgiFound"),
+	GREYHOUND(NpcID.GREYHOUND_WANDER, "Greyhound", "South of Woodcutting Guild", "greyhoundFound"),
+	HUSKY(NpcID.HUSKY_WANDER, "Husky", "Fishing Hamlet east of Wintertodt", "huskyFound"),
+	SAMOYED(NpcID.SAMOYED_WANDER, "Samoyed", "Hardwood groove in Tai Bwo Wannai", "samoyedFound"),
+	BERNESE_MOUNTAIN_DOG(NpcID.SHEPARD_WANDER, "Bernese Mountain Dog", "Between Relekka and Keldagrin entrance", "berneseMountainDogFound"),
+	SHIBA(NpcID.SHIBA_WANDER, "Shiba", "Avium Savannah Pyre foxes", "shibaFound"),
+	YORKIE(NpcID.YORKIE_WANDER, "Yorkie", "The Great Conch west of marketplace", "yorkieFound");
 
 	private final int npcId;
 	private final String displayName;
